@@ -24,8 +24,8 @@ What is Kickstart?
   Kickstart.nvim is *not* a distribution.
 
   Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
+    The goal is that you can read every line of code, top-/o-bottom, understand
+    what your configuration is doing, and modify it to sui/ your needs.
 
     Once you've done that, you can start exploring, configuring and tinkering to
     make Neovim your own! That might mean leaving Kickstart just the way it is for a while
@@ -244,8 +244,9 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-
+  --'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
+  --'adibhanna/laravel.nvim',
+  --'nvim-lualine/lualine.nvim',
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -255,14 +256,28 @@ require('lazy').setup({
 
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
-  --    {
-  --        'lewis6991/gitsigns.nvim',
-  --        config = function()
-  --            require('gitsigns').setup({
-  --                -- Your gitsigns configuration here
-  --            })
-  --        end,
-  --    }
+  {
+    --        'lewis6991/gitsigns.nvim',
+    --        config = function()
+    --            require('gitsigns').setup({
+    --                -- Your gitsigns configuration here
+    --            })
+    --        end,
+    'adibhanna/laravel.nvim',
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-lua/plenary.nvim',
+    },
+    keys = {
+      { '<leader>la', ':Artisan<cr>', desc = 'Laravel Artisan' },
+      { '<leader>lc', ':Composer<cr>', desc = 'Composer' },
+      { '<leader>lr', ':LaravelRoute<cr>', desc = 'Laravel Routes' },
+      { '<leader>lm', ':LaravelMake<cr>', desc = 'Laravel Make' },
+    },
+    config = function()
+      require('laravel').setup()
+    end,
+  },
   --
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`.
@@ -568,7 +583,6 @@ require('lazy').setup({
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
           map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
-
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
           ---@param method vim.lsp.protocol.Method
@@ -680,6 +694,9 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+        emmet_language_server = {
+          filetypes = { 'blade' },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -974,7 +991,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
-  -- require 'kickstart.plugins.neo-tree',
+  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
